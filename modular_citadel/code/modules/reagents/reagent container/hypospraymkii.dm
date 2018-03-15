@@ -136,7 +136,10 @@
 	if(vial)
 		vial.attack_self(user)
 
+<<<<<<< HEAD
+=======
 // Gunna allow this for now, still really don't approve - Pooj
+>>>>>>> b3e172852ac4921c35b2b29507b18fcdb859b40a
 /obj/item/hypospray/mkii/emag_act(mob/user)
 	inject_wait = COMBAT_WAIT_INJECT
 	spray_wait = COMBAT_WAIT_SPRAY
