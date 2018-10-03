@@ -716,9 +716,12 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			var/fcolor_r = GetHexColors(fixed_mut_color)
 			var/fcolor_g = GetHexColors(fixed_mut_color2)
 			var/fcolor_b = GetHexColors(fixed_mut_color3)
-			var/color_r = ReadRGB(H.dna.features["mcolor"])
-			var/color_g = ReadRGB(H.dna.features["mcolor2"])
-			var/color_b = ReadRGB(H.dna.features["mcolor3"])
+			var/list/colorlist = list()
+			colorlist += ReadRGB(H.dna.features["mcolor"])
+			colorlist += ReadRGB(H.dna.features["mcolor2"])
+			colorlist += ReadRGB(H.dna.features["mcolor3"])
+			for(var/index=1, index<=colorlist.len, index++)
+				colorlist[index] = colorlist[index]/255
 
 			if(!(H.has_trait(TRAIT_HUSK)))
 				if(!forced_colour)
@@ -727,7 +730,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 							if(fixed_mut_color)
 								accessory_overlay.color = list(fcolor_r,fcolor_g,fcolor_b)
 							else
-								accessory_overlay.color = list(color_r,color_g,color_b)
+								accessory_overlay.color = colorlist
 /*						if(MUTCOLORS2)
 							if(fixed_mut_color2)
 								accessory_overlay.color = list(GetHexColors("#[fixed_mut_color]"),GetHexColors("#[fixed_mut_color2]"),GetHexColors("#[fixed_mut_color3]"),list(0, 0, 0))
@@ -763,7 +766,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 				standing += inner_accessory_overlay
 
-			if(S.extra) //apply the extra overlay, if there is one
+/*			if(S.extra) //apply the extra overlay, if there is one
 				var/mutable_appearance/extra_accessory_overlay = mutable_appearance(S.icon, layer = -layer)
 				if(S.gender_specific)
 					extra_accessory_overlay.icon_state = "[g]_[bodypart]_extra_[S.icon_state]_[layertext]"
@@ -830,7 +833,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 							extra2_accessory_overlay.color = "#[H.dna.features["mcolor"]]"
 						else
 							extra2_accessory_overlay.color = "#[H.hair_color]"
-				standing += extra2_accessory_overlay
+				standing += extra2_accessory_overlay*/
 
 
 		H.overlays_standing[layer] = standing.Copy()
