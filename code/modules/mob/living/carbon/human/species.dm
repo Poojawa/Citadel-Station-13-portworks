@@ -528,22 +528,22 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	var/obj/item/bodypart/head/HD = H.get_bodypart(BODY_ZONE_HEAD)
 
 	if("tail_lizard" in mutant_bodyparts)
-		if(H.wear_suit && (H.wear_suit.flags_inv & HIDEJUMPSUIT) || (!H.dna.features["taur"] == "None"))
+		if(H.wear_suit && (H.wear_suit.flags_inv & HIDETAUR) || (!H.dna.features["taur"] == "None"))
 			bodyparts_to_add -= "tail_lizard"
 
 	if("waggingtail_lizard" in mutant_bodyparts)
-		if(H.wear_suit && (H.wear_suit.flags_inv & HIDEJUMPSUIT) || (!H.dna.features["taur"] == "None"))
+		if(H.wear_suit && (H.wear_suit.flags_inv & HIDETAUR) || (!H.dna.features["taur"] == "None"))
 			bodyparts_to_add -= "waggingtail_lizard"
 		else if ("tail_lizard" in mutant_bodyparts)
 			bodyparts_to_add -= "waggingtail_lizard"
 
 	if("tail_human" in mutant_bodyparts)
-		if(H.wear_suit && (H.wear_suit.flags_inv & HIDEJUMPSUIT) || (!H.dna.features["taur"] == "None"))
+		if(H.wear_suit && (H.wear_suit.flags_inv & HIDETAUR) || (!H.dna.features["taur"] == "None"))
 			bodyparts_to_add -= "tail_human"
 
 
 	if("waggingtail_human" in mutant_bodyparts)
-		if(H.wear_suit && (H.wear_suit.flags_inv & HIDEJUMPSUIT) || (!H.dna.features["taur"] == "None"))
+		if(H.wear_suit && (H.wear_suit.flags_inv & HIDETAUR) || (!H.dna.features["taur"] == "None"))
 			bodyparts_to_add -= "waggingtail_human"
 		else if ("tail_human" in mutant_bodyparts)
 			bodyparts_to_add -= "waggingtail_human"
@@ -599,11 +599,11 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 	//Other Races
 	if("mam_tail" in mutant_bodyparts)
-		if(H.wear_suit && (H.wear_suit.flags_inv & HIDEJUMPSUIT) || !H.dna.features["taur"] == "None")
+		if(H.wear_suit && (H.wear_suit.flags_inv & HIDETAUR) || (!H.dna.features["taur"] == "None"))
 			bodyparts_to_add -= "mam_tail"
 
 	if("mam_waggingtail" in mutant_bodyparts)
-		if(H.wear_suit && (H.wear_suit.flags_inv & HIDEJUMPSUIT || !H.dna.features["taur"] == "None"))
+		if(H.wear_suit && (H.wear_suit.flags_inv & HIDETAUR) || (!H.dna.features["taur"] == "None"))
 			bodyparts_to_add -= "mam_waggingtail"
 		else if ("mam_tail" in mutant_bodyparts)
 			bodyparts_to_add -= "mam_waggingtail"
@@ -613,8 +613,9 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			bodyparts_to_add -= "mam_ears"
 
 	if("taur" in mutant_bodyparts)
-		if(!H.dna.features["taur"] || H.dna.features["taur"] == "None")
+		if(!H.dna.features["taur"] || H.dna.features["taur"] == "None" || (H.wear_suit && (H.wear_suit.flags_inv & HIDETAUR)))
 			bodyparts_to_add -= "taur"
+
 //END EDIT
 
 	//Digitigrade legs are stuck in the phantom zone between true limbs and mutant bodyparts. Mainly it just needs more agressive updating than most limbs.
@@ -629,7 +630,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			species_traits += DIGITIGRADE
 		var/should_be_squished = FALSE
 		if(H.wear_suit)
-			if((H.wear_suit.flags_inv & HIDEJUMPSUIT) || ((H.wear_suit.body_parts_covered & LEGS) && (H.wear_suit.body_parts_covered & FEET)))
+			if(H.wear_suit.mutantrace_variation == NO_MUTANTRACE_VARIATION) //we got digitigrade suits now fam
 				should_be_squished = TRUE
 		if(H.w_uniform && !H.wear_suit)
 			if(H.w_uniform.mutantrace_variation == NO_MUTANTRACE_VARIATION)
@@ -1441,9 +1442,11 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		if(!target.combatmode) // CITADEL CHANGE
 			randn += -10 //CITADEL CHANGE - being out of combat mode makes it easier for you to get disarmed
 		if(user.resting) //CITADEL CHANGE
-			randn += 60 //CITADEL CHANGE - No kosher disarming if you're resting
+			randn += 100 //CITADEL CHANGE - No kosher disarming if you're resting
 		if(!user.combatmode) //CITADEL CHANGE
 			randn += 25 //CITADEL CHANGE - Makes it harder to disarm outside of combat mode
+		if(user.pulling == target)
+			randn += -20 //If you have the time to get someone in a grab, you should have a greater chance at snatching the thing in their hand. Will be made completely obsolete by the grab rework but i've got a poor track record for releasing big projects on time so w/e i guess
 
 		if(randn <= 35)//CIT CHANGE - changes this back to a 35% chance to accomodate for the above being commented out in favor of right-click pushing
 			var/obj/item/I = null
@@ -1610,7 +1613,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 /datum/species/proc/apply_damage(damage, damagetype = BRUTE, def_zone = null, blocked, mob/living/carbon/human/H)
 	var/hit_percent = (100-(blocked+armor))/100
 	hit_percent = (hit_percent * (100-H.physiology.damage_resistance))/100
-	if(!damage || hit_percent <= 0)
+	if(hit_percent <= 0)
 		return 0
 
 	var/obj/item/bodypart/BP = null
@@ -1627,14 +1630,14 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		if(BRUTE)
 			H.damageoverlaytemp = 20
 			if(BP)
-				if(BP.receive_damage(damage * hit_percent * brutemod * H.physiology.brute_mod, 0))
+				if(damage > 0 ? BP.receive_damage(damage * hit_percent * brutemod * H.physiology.brute_mod, 0) : BP.heal_damage(abs(damage * hit_percent * brutemod * H.physiology.brute_mod), 0))
 					H.update_damage_overlays()
 			else//no bodypart, we deal damage with a more general method.
 				H.adjustBruteLoss(damage * hit_percent * brutemod * H.physiology.brute_mod)
 		if(BURN)
 			H.damageoverlaytemp = 20
 			if(BP)
-				if(BP.receive_damage(0, damage * hit_percent * burnmod * H.physiology.burn_mod))
+				if(damage > 0 ? BP.receive_damage(0, damage * hit_percent * burnmod * H.physiology.burn_mod) : BP.heal_damage(0, abs(damage * hit_percent * burnmod * H.physiology.burn_mod)))
 					H.update_damage_overlays()
 			else
 				H.adjustFireLoss(damage * hit_percent * burnmod * H.physiology.burn_mod)
@@ -1646,7 +1649,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			H.adjustCloneLoss(damage * hit_percent * H.physiology.clone_mod)
 		if(STAMINA)
 			if(BP)
-				if(BP.receive_damage(0, 0, damage * hit_percent * H.physiology.stamina_mod))
+				if(damage > 0 ? BP.receive_damage(0, 0, damage * hit_percent * H.physiology.stamina_mod) : BP.heal_damage(0, 0, abs(damage * hit_percent * H.physiology.stamina_mod)))
 					H.update_stamina()
 			else
 				H.adjustStaminaLoss(damage * hit_percent * H.physiology.stamina_mod)

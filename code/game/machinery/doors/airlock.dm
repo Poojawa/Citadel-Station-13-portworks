@@ -95,11 +95,14 @@
 	var/air_tight = FALSE	//TRUE means density will be set as soon as the door begins to close
 	var/prying_so_hard = FALSE
 
+	rad_flags = RAD_PROTECT_CONTENTS | RAD_NO_CONTAMINATE
+	rad_insulation = RAD_MEDIUM_INSULATION
+
 	var/static/list/airlock_overlays = list()
 
 /obj/machinery/door/airlock/Initialize()
 	. = ..()
-	wires = new /datum/wires/airlock(src)
+	wires = new wiretypepath(src) //CIT CHANGE - makes it possible for airlocks to have different wire datums
 	if(frequency)
 		set_frequency(frequency)
 
@@ -152,7 +155,6 @@
 /obj/machinery/door/airlock/ComponentInitialize()
 	. = ..()
 	AddComponent(/datum/component/ntnet_interface)
-	AddComponent(/datum/component/rad_insulation, RAD_MEDIUM_INSULATION)
 
 /obj/machinery/door/airlock/proc/update_other_id()
 	for(var/obj/machinery/door/airlock/A in GLOB.airlocks)
