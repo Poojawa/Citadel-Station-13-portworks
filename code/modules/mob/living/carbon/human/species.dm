@@ -721,6 +721,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			colorlist += ReadRGB(H.dna.features["mcolor"])
 			colorlist += ReadRGB(H.dna.features["mcolor2"])
 			colorlist += ReadRGB(H.dna.features["mcolor3"])
+			colorlist += list(0,0,0)
 			for(var/index=1, index<=colorlist.len, index++)
 				colorlist[index] = colorlist[index]/255
 
@@ -731,7 +732,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 							if(fixed_mut_color)
 								accessory_overlay.color = list(fcolor_r,fcolor_g,fcolor_b)
 							else
-								accessory_overlay.color = colorlist
+								accessory_overlay.color = list(colorlist)
 /*						if(MUTCOLORS2)
 							if(fixed_mut_color2)
 								accessory_overlay.color = list(GetHexColors("#[fixed_mut_color]"),GetHexColors("#[fixed_mut_color2]"),GetHexColors("#[fixed_mut_color3]"),list(0, 0, 0))
