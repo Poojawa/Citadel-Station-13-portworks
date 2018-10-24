@@ -714,9 +714,6 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			if(S.center)
 				accessory_overlay = center_image(accessory_overlay, S.dimension_x, S.dimension_y)
 
-			var/fcolor_r = GetHexColors(fixed_mut_color)
-			var/fcolor_g = GetHexColors(fixed_mut_color2)
-			var/fcolor_b = GetHexColors(fixed_mut_color3)
 			var/list/colorlist = list()
 			colorlist += ReadRGB(H.dna.features["mcolor"])
 			colorlist += ReadRGB(H.dna.features["mcolor2"])
@@ -730,19 +727,23 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 					switch(S.color_src)
 						if(MUTCOLORS)
 							if(fixed_mut_color)
-								accessory_overlay.color = list(fcolor_r,fcolor_g,fcolor_b)
+								accessory_overlay.color = "#[fixed_mut_color]"
 							else
-								accessory_overlay.color = list(colorlist)
-/*						if(MUTCOLORS2)
+								accessory_overlay.color = "#[H.dna.features["mcolor"]]"
+						if(MUTCOLORS2)
 							if(fixed_mut_color2)
-								accessory_overlay.color = list(GetHexColors("#[fixed_mut_color]"),GetHexColors("#[fixed_mut_color2]"),GetHexColors("#[fixed_mut_color3]"),list(0, 0, 0))
+								accessory_overlay.color = "#[fixed_mut_color2]"
 							else
-								accessory_overlay.color = list(GetHexColors("#[H.dna.features["mcolor"]]"),GetHexColors("#[H.dna.features["mcolor2"]]"),GetHexColors("#[H.dna.features["mcolor3"]]"),list(0, 0, 0))
+								accessory_overlay.color = "#[H.dna.features["mcolor2"]]"
 						if(MUTCOLORS3)
 							if(fixed_mut_color3)
-								accessory_overlay.color = list(GetHexColors("#[fixed_mut_color]"),GetHexColors("#[fixed_mut_color2]"),GetHexColors("#[fixed_mut_color3]"),list(0, 0, 0))
+								accessory_overlay.color = "#[fixed_mut_color3]"
 							else
-								accessory_overlay.color = list(GetHexColors("#[H.dna.features["mcolor"]]"),GetHexColors("#[H.dna.features["mcolor2"]]"),GetHexColors("#[H.dna.features["mcolor3"]]"),list(0, 0, 0))*/
+								accessory_overlay.color = "#[H.dna.features["mcolor3"]]"
+
+						if(BODYMARKINGS)
+							accessory_overlay.color = list(colorlist)
+
 						if(HAIR)
 							if(hair_color == "mutcolor")
 								accessory_overlay.color = "#[H.dna.features["mcolor"]]"

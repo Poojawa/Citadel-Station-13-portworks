@@ -20,7 +20,7 @@
 	features = random_features()
 	age = rand(AGE_MIN,AGE_MAX)
 
-/datum/preferences/proc/update_preview_icon(nude = FALSE)
+/datum/preferences/proc/update_preview_icon()
 	// Silicons only need a very basic preview since there is no customization for them.
 	var/wide_icon = FALSE //CITDEL THINGS
 	var/stamp_x = 0
@@ -63,9 +63,11 @@
 				previewJob = job
 				break
 
-	if(previewJob && !nude)
-		mannequin.job = previewJob.title
-		previewJob.equip(mannequin, TRUE)
+	if(previewJob)
+		if(current_tab != 2)
+			mannequin.job = previewJob.title
+			previewJob.equip(mannequin, TRUE)
+
 	COMPILE_OVERLAYS(mannequin)
 	CHECK_TICK
 	preview_icon = icon('icons/effects/effects.dmi', "nothing")
