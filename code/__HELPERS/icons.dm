@@ -790,7 +790,10 @@ world
 		// Add the atom's icon itself, without pixel_x/y offsets.
 		if(!noIcon)
 			copy = image(icon=curicon, icon_state=curstate, layer=A.layer, dir=base_icon_dir)
-			copy.color = A.color
+			if(ishuman(A) && islist(A.color))
+				copy.color = list(A.color)
+			else
+				copy.color = A.color
 			copy.alpha = A.alpha
 			copy.blend_mode = curblend
 			layers[copy] = A.layer
