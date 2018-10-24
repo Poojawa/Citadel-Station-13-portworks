@@ -769,7 +769,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 				standing += inner_accessory_overlay
 
-/*			if(S.extra) //apply the extra overlay, if there is one
+			if(S.extra) //apply the extra overlay, if there is one
 				var/mutable_appearance/extra_accessory_overlay = mutable_appearance(S.icon, layer = -layer)
 				if(S.gender_specific)
 					extra_accessory_overlay.icon_state = "[g]_[bodypart]_extra_[S.icon_state]_[layertext]"
@@ -836,7 +836,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 							extra2_accessory_overlay.color = "#[H.dna.features["mcolor"]]"
 						else
 							extra2_accessory_overlay.color = "#[H.hair_color]"
-				standing += extra2_accessory_overlay*/
+				standing += extra2_accessory_overlay
 
 
 		H.overlays_standing[layer] = standing.Copy()
