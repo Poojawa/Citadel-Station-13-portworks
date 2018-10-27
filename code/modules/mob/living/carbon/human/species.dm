@@ -705,6 +705,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 				bodypart = "ears"
 			if(bodypart == "xenohead")
 				bodypart = "xhead"
+			if(bodypart == "mam_body_markings")
+				bodypart = "markings"
 
 			if(S.gender_specific)
 				accessory_overlay.icon_state = "[g]_[bodypart]_[S.icon_state]_[layertext]"

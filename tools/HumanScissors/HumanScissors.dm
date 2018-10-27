@@ -54,4 +54,4 @@ client/verb/split_sprites()
 			RunningOutput.Insert(Original,good_name)
 
 	//Give the output
-	usr << ftp(RunningOutput,"CutUpPeople.dmi")
+	usr << ftp(RunningOutput,"CutUpGirls.dmi")
