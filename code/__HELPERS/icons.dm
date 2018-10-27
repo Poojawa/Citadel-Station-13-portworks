@@ -712,7 +712,7 @@ world
 	var/static/icon/flat_template = icon('icons/effects/effects.dmi', "nothing")
 
 	#define BLANK icon(flat_template)
-	#define SET_SELF(SETVAR) \
+	#define SET_SELF(SETVAR) do { \
 		var/icon/SELF_ICON=icon(icon(curicon, curstate, base_icon_dir),"",SOUTH,no_anim?1:null); \
 		if(A.alpha<255) { \
 			SELF_ICON.Blend(rgb(255,255,255,A.alpha),ICON_MULTIPLY);\
@@ -723,7 +723,9 @@ world
 			else{ \
 				SELF_ICON.Blend(A.color,ICON_MULTIPLY)} \
 		} \
-		##SETVAR=SELF_ICON;
+		##SETVAR=SELF_ICON;\
+		} while (0)
+
 	#define INDEX_X_LOW 1
 	#define INDEX_X_HIGH 2
 	#define INDEX_Y_LOW 3
@@ -800,10 +802,7 @@ world
 		// Add the atom's icon itself, without pixel_x/y offsets.
 		if(!noIcon)
 			copy = image(icon=curicon, icon_state=curstate, layer=A.layer, dir=base_icon_dir)
-			if(ishuman(A) && islist(A.color))
-				copy.color = list(A.color)
-			else
-				copy.color = A.color
+			copy.color = A.color
 			copy.alpha = A.alpha
 			copy.blend_mode = curblend
 			layers[copy] = A.layer
