@@ -345,6 +345,7 @@
 
 //Gives you a proper icon appearance for the dismembered limb
 /obj/item/bodypart/proc/get_limb_icon(dropped)
+	cutoverlays()
 	icon_state = "" //to erase the default sprite, we're building the visual aspects of the bodypart through overlays alone.
 
 	. = list()
@@ -402,6 +403,28 @@
 				limb.icon_state = "[species_id]_[body_zone]_[icon_gender]"
 			else
 				limb.icon_state = "[species_id]_[body_zone]"
+
+			if(mam_body_markings != "None")
+				var/list/colorlist = list()
+				colorlist += ReadRGB(H.dna.features["mcolor"])
+				colorlist += ReadRGB(H.dna.features["mcolor2"])
+				colorlist += ReadRGB(H.dna.features["mcolor3"])
+				colorlist += list(0,0,0)
+				for(var/index=1, index<=colorlist.len, index++)
+					colorlist[index] = colorlist[index]/255
+
+				for(var/M in mam_body_markings)
+					var/datum/sprite_accessory/mam_body_markings/mark_style = markings[M]["datum"]
+					if(should_draw_gender)
+						var/icon/mark_s = new/icon("icon" = mark_style.icon, "icon_state" = "[icon_gender]_[bodypart]_[S.icon_state]_[layertext]")
+					else
+						var/icon/mark_s = new/icon("icon" = mark_style.icon, "icon_state" = "m_[bodypart]_[S.icon_state]_[layertext]")
+					if(islist(mark_s.color)
+						MapColors(arglist(mark_s.color))
+					else
+						mark_s.Blend(A.color,ICON_MULTIPLY)
+					. += mark_s //So when it's not on your body, it has icons
+
 		// Citadel End
 
 		if(aux_zone)
