@@ -326,7 +326,7 @@
 		for(var/index=1, index<=colorlist.len, index++)
 			colorlist[index] = colorlist[index]/255
 
-		if(mam_body_markings)
+		if(H.dna.features["mam_body_markings"] != "None")
 			mam_body_markings = H.dna.features["mam_body_markings"]
 			if(BODYMARKINGS)
 				markings_color = list(colorlist)
