@@ -45,6 +45,8 @@
 	var/species_color = ""
 	var/mutation_color = ""
 	var/no_update = 0
+	var/mam_body_markings = ""	//for bodypart markings
+	var/markings_color = ""
 
 	var/animal_origin = null //for nonhuman bodypart (e.g. monkey)
 	var/dismemberable = 1 //whether it can be dismembered with a weapon.
@@ -315,6 +317,25 @@
 		else
 			species_color = ""
 
+		//body marking memes
+		var/list/colorlist = list()
+		colorlist += ReadRGB(H.dna.features["mcolor"])
+		colorlist += ReadRGB(H.dna.features["mcolor2"])
+		colorlist += ReadRGB(H.dna.features["mcolor3"])
+		colorlist += list(0,0,0)
+		for(var/index=1, index<=colorlist.len, index++)
+			colorlist[index] = colorlist[index]/255
+
+		if(mam_body_markings)
+			mam_body_markings = H.dna.features["mam_body_markings"]
+			if(BODYMARKINGS)
+				markings_color = list(colorlist)
+			else
+				markings_color = (H.dna.features["mcolor"])
+		else
+			mam_body_markings = "None"
+			markings_color = "000"
+
 		if(!dropping_limb && H.dna.check_mutation(HULK))
 			mutation_color = "00aa00"
 		else
@@ -344,8 +365,15 @@
 	add_overlay(standing)
 
 //Gives you a proper icon appearance for the dismembered limb
-/obj/item/bodypart/proc/get_limb_icon(dropped)
-	cutoverlays()
+/obj/item/bodypart/proc/get_limb_icon(dropped,mob/living/carbon/source)
+	var/mob/living/carbon/C
+	if(source)
+		C = source
+	else
+		C = owner
+
+	var/mob/living/carbon/human/H = C
+
 	icon_state = "" //to erase the default sprite, we're building the visual aspects of the bodypart through overlays alone.
 
 	. = list()
@@ -361,6 +389,15 @@
 
 	var/image/limb = image(layer = -BODYPARTS_LAYER, dir = image_dir)
 	var/image/aux
+	var/image/mark_style
+	var/list/colorlist = list()
+	colorlist += ReadRGB(H.dna.features["mcolor"])
+	colorlist += ReadRGB(H.dna.features["mcolor2"])
+	colorlist += ReadRGB(H.dna.features["mcolor3"])
+	colorlist += list(0,0,0)
+	for(var/index=1, index<=colorlist.len, index++)
+		colorlist[index] = colorlist[index]/255
+
 	. += limb
 
 	if(animal_origin)
@@ -404,26 +441,15 @@
 			else
 				limb.icon_state = "[species_id]_[body_zone]"
 
-			if(mam_body_markings != "None")
-				var/list/colorlist = list()
-				colorlist += ReadRGB(H.dna.features["mcolor"])
-				colorlist += ReadRGB(H.dna.features["mcolor2"])
-				colorlist += ReadRGB(H.dna.features["mcolor3"])
-				colorlist += list(0,0,0)
-				for(var/index=1, index<=colorlist.len, index++)
-					colorlist[index] = colorlist[index]/255
-
-				for(var/M in mam_body_markings)
-					var/datum/sprite_accessory/mam_body_markings/mark_style = markings[M]["datum"]
+			if(mam_body_markings)
+				var/datum/sprite_accessory/M = GLOB.mam_body_markings_list[mam_body_markings]
+				if(M)
 					if(should_draw_gender)
-						var/icon/mark_s = new/icon("icon" = mark_style.icon, "icon_state" = "[icon_gender]_[bodypart]_[S.icon_state]_[layertext]")
+						mark_style = image(limb.icon, "[icon_gender]_[body_zone]_[M.icon_state]_ADJ", -BODY_ADJ_LAYER, image_dir)
 					else
-						var/icon/mark_s = new/icon("icon" = mark_style.icon, "icon_state" = "m_[bodypart]_[S.icon_state]_[layertext]")
-					if(islist(mark_s.color)
-						MapColors(arglist(mark_s.color))
-					else
-						mark_s.Blend(A.color,ICON_MULTIPLY)
-					. += mark_s //So when it's not on your body, it has icons
+						mark_style = image(limb.icon, "m_[body_zone]_[M.icon_state]_ADJ", -BODY_ADJ_LAYER, image_dir)
+					mark_style.color = list(colorlist)
+					. += mark_style //So when it's not on your body, it has icons
 
 		// Citadel End
 
