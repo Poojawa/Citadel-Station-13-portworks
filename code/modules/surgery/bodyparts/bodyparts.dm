@@ -441,15 +441,15 @@
 			else
 				limb.icon_state = "[species_id]_[body_zone]"
 
-			if(mam_body_markings)
-				var/datum/sprite_accessory/M = GLOB.mam_body_markings_list[mam_body_markings]
-				if(M)
-					if(should_draw_gender)
-						mark_style = image(limb.icon, "[icon_gender]_[body_zone]_[M.icon_state]_ADJ", -BODY_ADJ_LAYER, image_dir)
-					else
-						mark_style = image(limb.icon, "m_[body_zone]_[M.icon_state]_ADJ", -BODY_ADJ_LAYER, image_dir)
-					mark_style.color = list(colorlist)
-					. += mark_style //So when it's not on your body, it has icons
+		if(mam_body_markings)
+			var/datum/sprite_accessory/M = GLOB.mam_body_markings_list[mam_body_markings]
+			if(M)
+				if(should_draw_gender)
+					mark_style = image(limb.icon, "[icon_gender]_[body_zone]_[M.icon_state]_ADJ", -BODY_ADJ_LAYER, image_dir)
+				else
+					mark_style = image(limb.icon, "m_[body_zone]_[M.icon_state]_ADJ", -BODY_ADJ_LAYER, image_dir)
+				mark_style.color = list(colorlist)
+				. += mark_style //So when it's not on your body, it has icons
 
 		// Citadel End
 
