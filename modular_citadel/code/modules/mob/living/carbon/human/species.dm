@@ -81,8 +81,6 @@
 			return GLOB.mam_tails_list[H.dna.features["mam_tail"]]
 		if("mam_waggingtail")
 			return GLOB.mam_tails_animated_list[H.dna.features["mam_tail"]]
-		if("mam_body_markings")
-			return GLOB.mam_body_markings_list[H.dna.features["mam_body_markings"]]
 		if("mam_ears")
 			return GLOB.mam_ears_list[H.dna.features["mam_ears"]]
 		if("taur")
