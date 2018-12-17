@@ -504,17 +504,12 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			if(socks)
 				standing += mutable_appearance(socks.icon, socks.icon_state, -BODY_LAYER)
 
-	if(MARKINGS in species_traits))
-		if(H.mam_markings)
-			var/datum/sprite_accessory/mam_body_markings/mam_markings = GLOB.mam_body_markings_list[H.mam_body_markings]
-			if(mam_markings)
-				standing += mutable_appearance(mam_markings.icon, mam_markings.icon_state, -MARKINGS_LAYER)
-
 	if(standing.len)
 		H.overlays_standing[BODY_LAYER] = standing
 
 	H.apply_overlay(BODY_LAYER)
 	handle_mutant_bodyparts(H)
+	update_marking_overlays()
 
 /datum/species/proc/handle_mutant_bodyparts(mob/living/carbon/human/H, forced_colour)
 	var/list/bodyparts_to_add = mutant_bodyparts.Copy()
