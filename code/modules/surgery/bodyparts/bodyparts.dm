@@ -371,7 +371,7 @@
 		C = source
 	else
 		C = owner
-
+	cut_overlays()
 	var/mob/living/carbon/human/H = C
 
 	icon_state = "" //to erase the default sprite, we're building the visual aspects of the bodypart through overlays alone.
@@ -386,10 +386,11 @@
 				. += image('icons/mob/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_[brutestate]0", -DAMAGE_LAYER, image_dir)
 			if(burnstate)
 				. += image('icons/mob/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_0[burnstate]", -DAMAGE_LAYER, image_dir)
+		if(mam_body_markings)
+			. += image('modular_citadel/icons/mob/CutUpPeople.dmi', "[body_gender]_[body_zone]_markings_[mam_body_markings]_ADJ", -BODY_ADJ_LAYER, image_dir)
 
 	var/image/limb = image(layer = -BODYPARTS_LAYER, dir = image_dir)
 	var/image/aux
-	var/image/mark_style
 	var/list/colorlist = list()
 	colorlist += ReadRGB(H.dna.features["mcolor"])
 	colorlist += ReadRGB(H.dna.features["mcolor2"])
@@ -441,16 +442,6 @@
 			else
 				limb.icon_state = "[species_id]_[body_zone]"
 
-		if(mam_body_markings)
-			var/datum/sprite_accessory/M = GLOB.mam_body_markings_list[mam_body_markings]
-			if(M)
-				if(should_draw_gender)
-					mark_style = image(limb.icon, "[icon_gender]_[body_zone]_[M.icon_state]_ADJ", -BODY_ADJ_LAYER, image_dir)
-				else
-					mark_style = image(limb.icon, "m_[body_zone]_[M.icon_state]_ADJ", -BODY_ADJ_LAYER, image_dir)
-				mark_style.color = list(colorlist)
-				. += mark_style //So when it's not on your body, it has icons
-
 		// Citadel End
 
 		if(aux_zone)
@@ -475,6 +466,11 @@
 			limb.color = "#[draw_color]"
 			if(aux_zone)
 				aux.color = "#[draw_color]"
+
+	// Citadel markings to layer above everything else
+	if(mam_body_markings != "None")
+		var/marking = image('modular_citadel/icons/mob/CutUpPeople.dmi', "[icon_gender]_[body_zone]_markings_[mam_body_markings]_ADJ", -BODY_ADJ_LAYER, image_dir)
+		limb.overlays.Add(marking)
 
 /obj/item/bodypart/deconstruct(disassembled = TRUE)
 	drop_organs()

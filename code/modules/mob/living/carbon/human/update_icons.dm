@@ -93,6 +93,8 @@ There are several things that need to be remembered:
 		update_mutations_overlay()
 		//damage overlays
 		update_damage_overlays()
+		//marking overlays
+		update_marking_overlays()
 
 /* --------------------------------------- */
 //vvvvvv UPDATE_INV PROCS vvvvvv
@@ -374,8 +376,8 @@ There are several things that need to be remembered:
 			if(hud_used.inventory_shown)
 				client.screen += wear_suit
 		update_observer_view(wear_suit,1)
-				
-		if(S.mutantrace_variation) //All suits unless otherwise noted are snowflake'd, so let's ensure they're getting the override. 
+
+		if(S.mutantrace_variation) //All suits unless otherwise noted are snowflake'd, so let's ensure they're getting the override.
 			if(S.tauric) //Are we a suit with tauric mode possible?
 				if(S.taurmode == SNEK_TAURIC)
 					S.alternate_worn_icon = 'modular_citadel/icons/mob/taur_naga.dmi'
@@ -385,9 +387,9 @@ There are several things that need to be remembered:
 					S.alternate_worn_icon = null
 			else //let's clear the icon override just in case.
 				S.alternate_worn_icon = null
-				
+
 			if(S.adjusted == ALT_STYLE) //Do we have Digitigrade legs?
-				S.alternate_worn_icon = 'modular_citadel/icons/mob/suit_digi.dmi'	
+				S.alternate_worn_icon = 'modular_citadel/icons/mob/suit_digi.dmi'
 			else //We don't have anything special, but let's clear the icon again just in case.
 				S.alternate_worn_icon = null
 
@@ -475,6 +477,16 @@ There are several things that need to be remembered:
 			out += overlays_standing[i]
 	return out
 
+/mob/living/carbon/human/proc/update_marking_overlays()
+	remove_overlay(BODY_ADJ_LAYER)
+	for(var/X in bodyparts)
+		var/obj/item/bodypart/BP = X
+		if(BP.mam_body_markings != "None")
+			var/mutable_appearance/marking_overlay = mutable_appearance('modular_citadel/icons/mob/CutUpPeople.dmi', "[BP.mam_body_markings]", -BODY_ADJ_LAYER)
+			overlays_standing[BODY_ADJ_LAYER] = marking_overlay
+			marking_overlay.add_overlay("[BP.gender]_[BP.body_zone]_markings_[BP.mam_body_markings]_ADJ")	//we're adding markings to body parts's data.
+
+	apply_overlay(BODY_ADJ_LAYER)
 
 //human HUD updates for items in our inventory
 
@@ -642,6 +654,8 @@ generate/load female uniform sprites matching all previously decided variables
 			. += "-digitigrade[BP.use_digitigrade]"
 		if(BP.dmg_overlay_type)
 			. += "-[BP.dmg_overlay_type]"
+		if(BP.mam_body_markings)
+			. += "-[BP.mam_body_markings]"
 
 	if(has_trait(TRAIT_HUSK))
 		. += "-husk"
