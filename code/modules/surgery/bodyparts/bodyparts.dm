@@ -365,15 +365,8 @@
 	add_overlay(standing)
 
 //Gives you a proper icon appearance for the dismembered limb
-/obj/item/bodypart/proc/get_limb_icon(dropped,mob/living/carbon/source)
-	var/mob/living/carbon/C
-	if(source)
-		C = source
-	else
-		C = owner
+/obj/item/bodypart/proc/get_limb_icon(dropped)
 	cut_overlays()
-	var/mob/living/carbon/human/H = C
-
 	icon_state = "" //to erase the default sprite, we're building the visual aspects of the bodypart through overlays alone.
 
 	. = list()
@@ -391,13 +384,6 @@
 
 	var/image/limb = image(layer = -BODYPARTS_LAYER, dir = image_dir)
 	var/image/aux
-	var/list/colorlist = list()
-	colorlist += ReadRGB(H.dna.features["mcolor"])
-	colorlist += ReadRGB(H.dna.features["mcolor2"])
-	colorlist += ReadRGB(H.dna.features["mcolor3"])
-	colorlist += list(0,0,0)
-	for(var/index=1, index<=colorlist.len, index++)
-		colorlist[index] = colorlist[index]/255
 
 	. += limb
 
@@ -445,7 +431,7 @@
 		// Citadel markings to layer above everything else
 		if(mam_body_markings != "None")
 			var/image/marking = image('modular_citadel/icons/mob/testsprites.dmi', "[mam_body_markings]_[body_zone]", -MARKING_LAYER, image_dir)
-			marking.color = list(colorlist)
+			marking.color = list(markings_color)
 			. += marking
 
 		// Citadel End
