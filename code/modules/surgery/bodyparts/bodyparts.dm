@@ -387,7 +387,7 @@
 			if(burnstate)
 				. += image('icons/mob/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_0[burnstate]", -DAMAGE_LAYER, image_dir)
 		if(mam_body_markings)
-			. += image('modular_citadel/icons/mob/testsprites.dmi', "[body_zone]_[mam_body_markings]", -MARKING_LAYER, image_dir)
+			. += image('modular_citadel/icons/mob/testsprites.dmi', "[mam_body_markings]_[body_zone]", -MARKING_LAYER, image_dir)
 
 	var/image/limb = image(layer = -BODYPARTS_LAYER, dir = image_dir)
 	var/image/aux
@@ -442,6 +442,12 @@
 			else
 				limb.icon_state = "[species_id]_[body_zone]"
 
+		// Citadel markings to layer above everything else
+		if(mam_body_markings != "None")
+			var/image/marking = image('modular_citadel/icons/mob/testsprites.dmi', "[mam_body_markings]_[body_zone]", -MARKING_LAYER, image_dir)
+			marking.color = list(colorlist)
+			. += marking
+
 		// Citadel End
 
 		if(aux_zone)
@@ -467,10 +473,6 @@
 			if(aux_zone)
 				aux.color = "#[draw_color]"
 
-	// Citadel markings to layer above everything else
-	if(mam_body_markings != "None")
-		var/marking = image('modular_citadel/icons/mob/testsprites.dmi', "[body_zone]_[mam_body_markings]", -MARKING_LAYER, image_dir)
-		limb.add_overlay(marking)
 
 /obj/item/bodypart/deconstruct(disassembled = TRUE)
 	drop_organs()
