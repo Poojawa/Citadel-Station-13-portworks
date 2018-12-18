@@ -2079,7 +2079,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		character.update_body()
 		character.update_hair()
 		character.update_body_parts()
-		character.update_marking_overlays()
 
 /datum/preferences/proc/get_default_name(name_id)
 	switch(name_id)
