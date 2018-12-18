@@ -482,9 +482,9 @@ There are several things that need to be remembered:
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/BP = X
 		if(BP.mam_body_markings != "None")
-			var/mutable_appearance/marking_overlay = mutable_appearance('modular_citadel/icons/mob/CutUpPeople.dmi', "[BP.mam_body_markings]", -BODY_ADJ_LAYER)
+			var/mutable_appearance/marking_overlay = mutable_appearance('modular_citadel/icons/mob/testsprites.dmi', "[BP.body_zone]_[BP.mam_body_markings]", -BODY_ADJ_LAYER)
 			overlays_standing[MARKING_LAYER] = marking_overlay
-			marking_overlay.add_overlay("[BP.gender]_[BP.body_zone]_markings_[BP.mam_body_markings]_ADJ")	//we're adding markings to body parts's data.
+			marking_overlay.add_overlay("[BP.body_zone]_[BP.mam_body_markings]")	//we're adding markings to body parts's data.
 
 	apply_overlay(MARKING_LAYER)
 
