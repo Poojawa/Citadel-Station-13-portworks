@@ -509,7 +509,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 	H.apply_overlay(BODY_LAYER)
 	handle_mutant_bodyparts(H)
-	update_marking_overlays()
+	H.update_marking_overlays()
 
 /datum/species/proc/handle_mutant_bodyparts(mob/living/carbon/human/H, forced_colour)
 	var/list/bodyparts_to_add = mutant_bodyparts.Copy()

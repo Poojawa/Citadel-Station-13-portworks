@@ -919,7 +919,7 @@ datum/sprite_accessory/mam_tails/tentacle
 	color_src = BODYMARKINGS
 	gender_specific = 1
 //	icon = 'modular_citadel/icons/mob/mam_body_markings.dmi'
-	icon = 'modular_citadel/icons/mob/CutUpPeople.dmi'
+	icon = 'modular_citadel/icons/mob/testsprites.dmi'
 
 /datum/sprite_accessory/mam_body_markings/none
 	name = "None"
