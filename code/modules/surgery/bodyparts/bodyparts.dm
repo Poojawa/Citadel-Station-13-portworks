@@ -428,17 +428,17 @@
 			else
 				limb.icon_state = "[species_id]_[body_zone]"
 
-		// Citadel markings to layer above everything else
-		if(mam_body_markings != "None")
-			var/image/marking = image('modular_citadel/icons/mob/testsprites.dmi', "[mam_body_markings]_[body_zone]", -MARKING_LAYER, image_dir)
-			marking.color = list(markings_color)
-			. += marking
-
 		// Citadel End
 
 		if(aux_zone)
 			aux = image(limb.icon, "[species_id]_[aux_zone]", -aux_layer, image_dir)
 			. += aux
+
+		// Citadel markings to layer above everything else
+		if(mam_body_markings != "None")
+			var/image/marking = image('modular_citadel/icons/mob/testsprites.dmi', "[mam_body_markings]_[body_zone]", -MARKING_LAYER, image_dir)
+			marking.color = list(markings_color)
+			. += marking
 
 	else
 		limb.icon = icon
