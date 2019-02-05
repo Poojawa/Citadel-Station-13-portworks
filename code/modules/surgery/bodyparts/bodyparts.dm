@@ -47,6 +47,7 @@
 	var/no_update = 0
 	var/list/body_markings = list() 	//for bodypart markings
 	var/list/markings_color = list()
+	var/auxmarking
 
 	var/animal_origin = null //for nonhuman bodypart (e.g. monkey)
 	var/dismemberable = 1 //whether it can be dismembered with a weapon.
@@ -480,9 +481,9 @@
 			limb.color = "#[draw_color]"
 			if(aux_zone)
 				aux.color = "#[draw_color]"
-				auxmarking.color = list(markings_color)
 			if(body_markings)
 				marking.color = list(markings_color)
+				auxmarking.color = list(markings_color)
 
 
 /obj/item/bodypart/deconstruct(disassembled = TRUE)
