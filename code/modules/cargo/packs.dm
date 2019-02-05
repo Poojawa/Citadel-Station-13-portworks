@@ -81,10 +81,19 @@
 	crate_name = "emergency crate"
 	crate_type = /obj/structure/closet/crate/internals
 
+/datum/supply_pack/emergency/rcds
+	name = "Emergency RCDs"
+	desc = "Bombs going off on station? SME blown and now you need to fix the hole it left behind? Well this crate has a pare of Rcds to be able to easily fix up any problem you may have!"
+	cost = 1500
+	contains = list(/obj/item/construction/rcd,
+					/obj/item/construction/rcd)
+	crate_name = "emergency rcds"
+	crate_type = /obj/structure/closet/crate/internals
+
 /datum/supply_pack/emergency/soft_suit
 	name = "Emergency Space Suit "
 	desc = "Is there bombs going off left and right? Is there meteors shooting around the station? Well we have two fragile space suit for emergencys as well as air and masks."
-	cost = 1000 
+	cost = 1000
 	contains = list(/obj/item/tank/internals/air,
 					/obj/item/tank/internals/air,
 					/obj/item/clothing/mask/gas,
@@ -256,6 +265,26 @@
 	crate_name = "weed control crate"
 	crate_type = /obj/structure/closet/crate/secure/hydroponics
 
+/datum/supply_pack/medical/anitvirus
+	name = "Virus Containment Crate"
+	desc = "Viro let out a death plague Mk II again? Someone didnt wash there hands? Old plagues born anew? Well this crate is for you! Hope you cure it before it brakes out of the station... This crate needs medical access to open and has two bio suits, a box of needles and beakers, five spaceacillin needles, and a medibot."
+	cost = 3000
+	access = ACCESS_MEDICAL
+	contains = list(/mob/living/simple_animal/bot/medbot,
+					/obj/item/clothing/head/bio_hood,
+					/obj/item/clothing/head/bio_hood,
+					/obj/item/clothing/suit/bio_suit,
+					/obj/item/clothing/suit/bio_suit,
+					/obj/item/reagent_containers/syringe/antiviral,
+					/obj/item/reagent_containers/syringe/antiviral,
+					/obj/item/reagent_containers/syringe/antiviral,
+					/obj/item/reagent_containers/syringe/antiviral,
+					/obj/item/reagent_containers/syringe/antiviral,
+					/obj/item/storage/box/syringes,
+					/obj/item/storage/box/beakers)
+	crate_name = "virus containment unit crate"
+	crate_type = /obj/structure/closet/crate/secure/plasma
+
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////// Security ////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
@@ -385,6 +414,29 @@
 					/obj/item/melee/baton/loaded,
 					/obj/item/melee/baton/loaded)
 	crate_name = "stun baton crate"
+
+/datum/supply_pack/security/russianclothing
+	name = "Russian Surplus Clothing"
+	desc = "An old russian crate full of surplus armor that they used to use! Has two sets of bulletproff armor, a few union suits and some warm hats!"
+	hidden = TRUE
+	contraband = TRUE
+	cost = 5000 // Its basicly sec suits, good boots/gloves
+	contains = list(/obj/item/clothing/suit/security/officer/russian,
+					/obj/item/clothing/suit/security/officer/russian,
+					/obj/item/clothing/shoes/combat,
+					/obj/item/clothing/shoes/combat,
+					/obj/item/clothing/head/ushanka,
+					/obj/item/clothing/head/ushanka,
+					/obj/item/clothing/suit/armor/bulletproof,
+					/obj/item/clothing/suit/armor/bulletproof,
+					/obj/item/clothing/head/helmet/alt,
+					/obj/item/clothing/head/helmet/alt,
+					/obj/item/clothing/gloves/combat,
+					/obj/item/clothing/gloves/combat,
+					/obj/item/clothing/mask/gas,
+					/obj/item/clothing/mask/gas)
+	crate_name = "surplus russian clothing"
+	crate_type = /obj/structure/closet/crate/internals
 
 /datum/supply_pack/security/taser
 	name = "Taser Crate"
@@ -665,6 +717,15 @@
 					/obj/item/clothing/mask/gas,
 					/obj/item/clothing/suit/space/hardsuit/engine)
 	crate_name = "engineering hardsuit"
+
+/datum/supply_pack/engineering/industrialrcd
+	name = "Industrial RCD"
+	desc = "A industrial RCD in case the station has gone through more then one meteor storm and the CE needs to bring out the somthing a bit more reliable. Dose not contain spare ammo for the industrial RCD or any other RCD modles."
+	cost = 4500
+	access = ACCESS_CE
+	contains = list(/obj/item/construction/rcd/industrial)
+	crate_name = "industrial rcd"
+	crate_type = /obj/structure/closet/crate/secure/engineering
 
 /datum/supply_pack/engineering/powergamermitts
 	name = "Insulated Gloves Crate"
@@ -1011,6 +1072,28 @@
 	contains = list(/obj/item/stack/sheet/mineral/wood/fifty)
 	crate_name = "wood planks crate"
 
+/datum/supply_pack/materials/rcdammo
+	name = "Spare RDC ammo"
+	desc = "This crate contains sixteen RCD ammo packs, to help with any holes or projects people mite be working on."
+	cost = 3750
+	contains = list(/obj/item/rcd_ammo,
+					/obj/item/rcd_ammo,
+					/obj/item/rcd_ammo,
+					/obj/item/rcd_ammo,
+					/obj/item/rcd_ammo,
+					/obj/item/rcd_ammo,
+					/obj/item/rcd_ammo,
+					/obj/item/rcd_ammo,
+					/obj/item/rcd_ammo,
+					/obj/item/rcd_ammo,
+					/obj/item/rcd_ammo,
+					/obj/item/rcd_ammo,
+					/obj/item/rcd_ammo,
+					/obj/item/rcd_ammo,
+					/obj/item/rcd_ammo,
+					/obj/item/rcd_ammo)
+	crate_name = "rcd ammo"
+
 /datum/supply_pack/materials/bz
 	name = "BZ Canister Crate"
 	desc = "Contains a canister of BZ. Requires Toxins access to open."
@@ -1280,6 +1363,7 @@
 	crate_type = /obj/structure/closet/crate/secure/plasma
 	dangerous = TRUE
 
+
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////// Science /////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
@@ -1453,6 +1537,18 @@
 	crate_name = "janitor backpack crate"
 	crate_type = /obj/structure/closet/crate/secure
 
+/datum/supply_pack/service/advlighting
+	name = "Advanced Lighting crate"
+	desc = "Thanks to advanced lighting tech we here at the Lamp Factory have be able to produce more lamps and lamp items! This crate has three lamps, a box of lights and a state of the art rapid-light-device!"
+	cost = 2500 //Fair
+	contains = list(/obj/item/construction/rld,
+					/obj/item/flashlight/lamp,
+					/obj/item/flashlight/lamp,
+					/obj/item/flashlight/lamp/green,
+					/obj/item/storage/box/lights/mixed)
+	crate_name = "advanced lighting crate"
+	crate_type = /obj/structure/closet/crate/secure
+
 /datum/supply_pack/service/mule
 	name = "MULEbot Crate"
 	desc = "Pink-haired Quartermaster not doing her job? Replace her with this tireless worker, today!"
@@ -1606,7 +1702,7 @@
 	name = "Kitchen Cutlery Deluxe Set"
 	desc = "Need to slice and dice away those ''Tomatos'' well we got what you need! From a nice set of knifes, forks, plates, glasses, and a whetstone for when you got some grizzle that is a bit harder to slice then normal."
 	cost = 10000
-	contraband = TRUE 
+	contraband = TRUE
 	contains = list(/obj/item/sharpener,
 					/obj/item/kitchen/fork,
 					/obj/item/kitchen/fork,
@@ -1662,6 +1758,22 @@
 	contraband = TRUE
 	access = ACCESS_THEATRE
 	crate_type = /obj/structure/closet/crate/secure
+
+/datum/supply_pack/organic/hunting
+	name = "Huntting gear"
+	desc = "Even in space, we can fine prey to hunt, this crate contains everthing a fine hunter needs to have a sporting time. This crate needs armory access to open. A true huntter only needs a fine bottle of cognac, a nice coat, some good o' cigars, and of cource a huntting shotgun. "
+	cost = 3500
+	contraband = TRUE
+	contains = list(/obj/item/clothing/head/flatcap,
+					/obj/item/clothing/suit/hooded/wintercoat/captain,
+					/obj/item/reagent_containers/food/drinks/bottle/cognac,
+					/obj/item/storage/fancy/cigarettes/cigars/havana,
+					/obj/item/clothing/gloves/color/white,
+					/obj/item/clothing/under/rank/curator,
+					/obj/item/gun/ballistic/shotgun/lethal)
+	access = ACCESS_ARMORY
+	crate_name = "sporting crate"
+	crate_type = /obj/structure/closet/crate/secure // Would have liked a wooden crate but access >:(
 
 /datum/supply_pack/organic/hydroponics
 	name = "Hydroponics Crate"
@@ -2106,7 +2218,7 @@
 /datum/supply_pack/costumes_toys/randomised/toys
 	name = "Toy Crate"
 	desc = "Who cares about pride and accomplishment? Skip the gaming and get straight to the sweet rewards with this product! Contains five random toys. Warranty void if used to prank research directors."
-	cost = 5000 // or play the arcade machines ya lazy bum
+	cost = 1500 // or play the arcade machines ya lazy bum
 	// TODID make this actually just use the arcade machine loot list
 	num_contained = 5
 	contains = list(/obj/item/storage/box/snappops,
@@ -2157,7 +2269,70 @@
 					/obj/item/clothing/shoes/kindleKicks,
 					/obj/item/storage/belt/military/snack,
 					/obj/item/toy/eightball,
-					/obj/item/vending_refill/donksoft)
+					/obj/item/vending_refill/donksoft,
+					/obj/item/toy/plush/lizardplushie,
+					/obj/item/toy/plush/lizardplushie/durgit,
+					/obj/item/toy/plush/lizardplushie/rio,
+					/obj/item/toy/plush/lizardplushie/urinsu,
+					/obj/item/toy/plush/lizardplushie/arfrehn,
+					/obj/item/toy/plush/lizardplushie/soars,
+					/obj/item/toy/plush/lizardplushie/ghostie,
+					/obj/item/toy/plush/lizardplushie/amber,
+					/obj/item/toy/plush/lizardplushie/cyan,
+					/obj/item/toy/plush/lizardplushie/meena,
+					/obj/item/toy/plush/lizardplushie/stalks,
+					/obj/item/toy/plush/lizardplushie/kobold,
+					/obj/item/toy/plush/lizardplushie/gorgi,
+					/obj/item/toy/plush/lizardplushie/almaz,
+					/obj/item/toy/plush/snakeplushie/sasha,
+					/obj/item/toy/plush/snakeplushie/shay,
+					/obj/item/toy/plush/snakeplushie/vulken,
+					/obj/item/toy/plush/mothplushie,
+					/obj/item/toy/plush/mothplushie/bumble,
+					/obj/item/toy/plush/mothplushie/nameko,
+					/obj/item/toy/plush/mothplushie/suru,
+					/obj/item/toy/plush/xeno,
+					/obj/item/toy/plush/lampplushie,
+					/obj/item/toy/plush/borgplushie,
+					/obj/item/toy/plush/borgplushie/medihound,
+					/obj/item/toy/plush/borgplushie/scrubpuppy,
+					/obj/item/toy/plush/borgplushie/seeking,
+					/obj/item/toy/plush/borgplushie/neeb,
+					/obj/item/toy/plush/bird,
+					/obj/item/toy/plush/bird/esela,
+					/obj/item/toy/plush/bird/jahonna,
+					/obj/item/toy/plush/bird/krick,
+					/obj/item/toy/plush/bird/birddi,
+					/obj/item/toy/plush/bird/jewel,
+					/obj/item/toy/plush/mammal,
+					/obj/item/toy/plush/mammal/dubious,
+					/obj/item/toy/plush/mammal/gladwyn,
+					/obj/item/toy/plush/mammal/gavin,
+					/obj/item/toy/plush/mammal/blep,
+					/obj/item/toy/plush/mammal/circe,
+					/obj/item/toy/plush/mammal/pavel,
+					/obj/item/toy/plush/mammal/oten,
+					/obj/item/toy/plush/mammal/ray,
+					/obj/item/toy/plush/mammal/dawud,
+					/obj/item/toy/plush/mammal/edgar,
+					/obj/item/toy/plush/mammal/frank,
+					/obj/item/toy/plush/mammal/poojawa,
+					/obj/item/toy/plush/mammal/hazel,
+					/obj/item/toy/plush/mammal/jermaine,
+					/obj/item/toy/plush/mammal/gunther,
+					/obj/item/toy/plush/mammal/fox,
+					/obj/item/toy/plush/mammal/zed,
+					/obj/item/toy/plush/mammal/dog,
+					/obj/item/toy/plush/mammal/dog/frost,
+					/obj/item/toy/plush/mammal/dog/atticus,
+					/obj/item/toy/plush/mammal/dog/fletch,
+					/obj/item/toy/plush/mammal/dog/vincent,
+					/obj/item/toy/plush/mammal/dog/zigfried,
+					/obj/item/toy/plush/mammal/dog/nikolai,
+					/obj/item/toy/plush/catgirl,
+					/obj/item/toy/plush/catgirl/skylar,
+					/obj/item/toy/plush/catgirl/mikeel,
+					/obj/item/toy/plush/catgirl/robin)
 	crate_name = "toy crate"
 	crate_type = /obj/structure/closet/crate/wooden
 
@@ -2404,13 +2579,30 @@
 	crate_type = /obj/structure/closet/crate
 
 /datum/supply_pack/misc/lewdkeg
-	name = "Lewd Deluxe Keg" 
+	name = "Lewd Deluxe Keg"
 	desc = "That other stuff not getting you ready? Well I have a Chemslut making tons of the good stuff."
 	cost = 7000 //It can be a weapon
 	contraband = TRUE
 	contains = list(/obj/structure/reagent_dispensers/keg/aphro/strong)
 	crate_name = "deluxe keg"
 	crate_type = /obj/structure/closet/crate
+
+/datum/supply_pack/misc/paper_work
+	name = "Freelance Paper work"
+	desc = "The Nanotrasen Primary Bureaucratic Database Intelligence (PDBI) reports that the station has not completed its funding and grant paperwork this solar cycle. In order to gain further funding, your station is required to fill out (10) ten of these forms or no additional capital will be disbursed. We have sent you ten copies of the following form and we expect every one to be up to Nanotrasen Standards." // Disbursement. It's not a typo, look it up.
+	cost = 400 // Net of 0 credits
+	contains = list(/obj/item/paper/fluff/jobs/cargo/manifest/paperwork,
+					/obj/item/paper/fluff/jobs/cargo/manifest/paperwork,
+					/obj/item/paper/fluff/jobs/cargo/manifest/paperwork,
+					/obj/item/paper/fluff/jobs/cargo/manifest/paperwork,
+					/obj/item/paper/fluff/jobs/cargo/manifest/paperwork,
+					/obj/item/paper/fluff/jobs/cargo/manifest/paperwork,
+					/obj/item/paper/fluff/jobs/cargo/manifest/paperwork,
+					/obj/item/paper/fluff/jobs/cargo/manifest/paperwork,
+					/obj/item/paper/fluff/jobs/cargo/manifest/paperwork,
+					/obj/item/paper/fluff/jobs/cargo/manifest/paperwork,
+					/obj/item/storage/box/fountainpens) // Two spare pens just in case
+	crate_name = "Paperwork"
 
 /datum/supply_pack/misc/toner
 	name = "Toner Crate"
