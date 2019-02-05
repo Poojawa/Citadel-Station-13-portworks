@@ -47,8 +47,7 @@ client/verb/split_sprites()
 			Original.Blend(Cutter,ICON_AND) //AND, not ADD
 
 			//Make a useful name
-			// swap m_ and f_ if gender specific
-			var/good_name = "f_[CutterState]_[OriginalState]"
+			var/good_name = "[OriginalState]_[CutterState]"
 
 			//Add to the output with the good name
 			RunningOutput.Insert(Original,good_name)

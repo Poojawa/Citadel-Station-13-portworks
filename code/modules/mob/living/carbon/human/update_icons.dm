@@ -641,8 +641,8 @@ generate/load female uniform sprites matching all previously decided variables
 			. += "-digitigrade[BP.use_digitigrade]"
 		if(BP.dmg_overlay_type)
 			. += "-[BP.dmg_overlay_type]"
-		if(BP.mam_body_markings)
-			. += "-[BP.mam_body_markings]"
+		if(BP.body_markings)
+			. += "-[BP.body_markings]"
 
 	if(has_trait(TRAIT_HUSK))
 		. += "-husk"

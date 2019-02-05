@@ -45,8 +45,8 @@
 	var/species_color = ""
 	var/mutation_color = ""
 	var/no_update = 0
-	var/mam_body_markings = ""	//for bodypart markings
-	var/markings_color = ""
+	var/list/body_markings = list() 	//for bodypart markings
+	var/list/markings_color = list()
 
 	var/animal_origin = null //for nonhuman bodypart (e.g. monkey)
 	var/dismemberable = 1 //whether it can be dismembered with a weapon.
@@ -299,6 +299,15 @@
 		species_id = S.limbs_id
 		species_flags_list = H.dna.species.species_traits
 
+		//body marking memes
+		var/list/colorlist = list()
+		colorlist += ReadRGB(H.dna.features["mcolor"])
+		colorlist += ReadRGB(H.dna.features["mcolor2"])
+		colorlist += ReadRGB(H.dna.features["mcolor3"])
+		colorlist += list(0,0,0)
+		for(var/index=1, index<=colorlist.len, index++)
+			colorlist[index] = colorlist[index]/255
+
 		if(S.use_skintones)
 			skin_tone = H.skin_tone
 			should_draw_greyscale = TRUE
@@ -317,23 +326,14 @@
 		else
 			species_color = ""
 
-		//body marking memes
-		var/list/colorlist = list()
-		colorlist += ReadRGB(H.dna.features["mcolor"])
-		colorlist += ReadRGB(H.dna.features["mcolor2"])
-		colorlist += ReadRGB(H.dna.features["mcolor3"])
-		colorlist += list(0,0,0)
-		for(var/index=1, index<=colorlist.len, index++)
-			colorlist[index] = colorlist[index]/255
-
-		if(H.dna.features["mam_body_markings"] != "None")
-			mam_body_markings = H.dna.features["mam_body_markings"]
+		if(H.dna.features.["mam_body_markings"] != "None")
+			body_markings = H.dna.features.["mam_body_markings"]
 			if(BODYMARKINGS)
 				markings_color = list(colorlist)
 			else
-				markings_color = (H.dna.features["mcolor"])
+				markings_color = (H.dna.features.["mcolor"])
 		else
-			mam_body_markings = "None"
+			body_markings = "None"
 			markings_color = "000"
 
 		if(!dropping_limb && H.dna.check_mutation(HULK))
@@ -379,11 +379,16 @@
 				. += image('icons/mob/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_[brutestate]0", -DAMAGE_LAYER, image_dir)
 			if(burnstate)
 				. += image('icons/mob/dam_mob.dmi', "[dmg_overlay_type]_[body_zone]_0[burnstate]", -DAMAGE_LAYER, image_dir)
-		if(mam_body_markings)
-			. += image('modular_citadel/icons/mob/testsprites.dmi', "[mam_body_markings]_[body_zone]", -MARKING_LAYER, image_dir)
+		if(body_markings)
+			if(use_digitigrade == NOT_DIGITIGRADE)
+				. += image('modular_citadel/icons/mob/testsprites.dmi', "[body_markings]_[body_zone]", -MARKING_LAYER, image_dir)
+			else
+				. += image('modular_citadel/icons/mob/testsprites.dmi', "[body_markings]_digitigrade_[use_digitigrade]_[body_zone]", -MARKING_LAYER, image_dir)
 
 	var/image/limb = image(layer = -BODYPARTS_LAYER, dir = image_dir)
 	var/image/aux
+	var/image/marking
+	var/image/auxmarking
 
 	. += limb
 
@@ -428,17 +433,23 @@
 			else
 				limb.icon_state = "[species_id]_[body_zone]"
 
+		// Body markings
+		if(body_markings)
+			if(use_digitigrade == NOT_DIGITIGRADE)
+				marking = image('modular_citadel/icons/mob/testsprites.dmi', "[body_markings]_[body_zone]", -MARKING_LAYER, image_dir)
+			else
+				marking = image('modular_citadel/icons/mob/testsprites.dmi', "[body_markings]_digitigrade_[use_digitigrade]_[body_zone]", -MARKING_LAYER, image_dir)
+			. += marking
+
 		// Citadel End
 
 		if(aux_zone)
 			aux = image(limb.icon, "[species_id]_[aux_zone]", -aux_layer, image_dir)
+			if(body_markings)
+				if(use_digitigrade == NOT_DIGITIGRADE)
+					auxmarking = image('modular_citadel/icons/mob/testsprites.dmi', "[body_markings]_[aux_zone]", -MARKING_LAYER, image_dir)
 			. += aux
-
-		// Citadel markings to layer above everything else
-		if(mam_body_markings != "None")
-			var/image/marking = image('modular_citadel/icons/mob/testsprites.dmi', "[mam_body_markings]_[body_zone]", -MARKING_LAYER, image_dir)
-			marking.color = list(markings_color)
-			. += marking
+			. += auxmarking
 
 	else
 		limb.icon = icon
@@ -447,8 +458,19 @@
 		else
 			limb.icon_state = "[body_zone]"
 		if(aux_zone)
-			aux = image(limb.icon, "[aux_zone]", -aux_layer, image_dir)
+			aux = image(limb.icon, "[species_id]_[aux_zone]", -aux_layer, image_dir)
+			if(body_markings)
+				if(use_digitigrade == NOT_DIGITIGRADE)
+					auxmarking = image('modular_citadel/icons/mob/testsprites.dmi', "[body_markings]_[aux_zone]", -MARKING_LAYER, image_dir)
 			. += aux
+			. += auxmarking
+
+		if(body_markings)
+			if(use_digitigrade == NOT_DIGITIGRADE)
+				marking = image('modular_citadel/icons/mob/testsprites.dmi', "[body_markings]_[body_zone]", -MARKING_LAYER, image_dir)
+			else
+				marking = image('modular_citadel/icons/mob/testsprites.dmi', "[body_markings]_digitigrade_[use_digitigrade]_[body_zone]", -MARKING_LAYER, image_dir)
+			. += marking
 		return
 
 
@@ -458,6 +480,9 @@
 			limb.color = "#[draw_color]"
 			if(aux_zone)
 				aux.color = "#[draw_color]"
+				auxmarking.color = list(markings_color)
+			if(body_markings)
+				marking.color = list(markings_color)
 
 
 /obj/item/bodypart/deconstruct(disassembled = TRUE)
