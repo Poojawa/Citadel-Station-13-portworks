@@ -2,14 +2,14 @@
 /obj/structure/guncase
 	name = "gun locker"
 	desc = "A locker that holds guns."
-	icon = 'icons/obj/closet.dmi'
+	icon = 'icons/obj/guncase.dmi'
 	icon_state = "shotguncase"
 	anchored = FALSE
 	density = TRUE
 	opacity = 0
 	var/case_type = ""
 	var/gun_category = /obj/item/gun
-	var/open = TRUE
+	var/open = FALSE
 	var/capacity = 4
 
 /obj/structure/guncase/Initialize(mapload)
@@ -111,3 +111,54 @@
 	icon_state = "ecase"
 	case_type = "egun"
 	gun_category = /obj/item/gun/energy/e_gun
+
+//because I don't really wanna override the usual, I guess. - Pooj
+/obj/structure/gunlocker
+	name = "gun locker"
+	desc = "A locker that holds guns."
+	icon_state = "riflecase"
+	anchored = TRUE
+	density = TRUE
+	opacity = FALSE
+	max_integrity = 400
+	integrity_failure = 10
+	armor = list("melee" = 70, "bullet" = 70, "laser" = 70, "energy" = 70, "bomb" = 50, "bio" = 0, "rad" = 0, "fire" = 100, "acid" = 100)
+	var/locked = TRUE
+	var/secured = TRUE
+	var/welded = FALSE
+	var/cutting_tool = /obj/item/weldingtool
+
+/obj/structure/guncase/update_icon()
+	cut_overlays()
+	if(case_type && LAZYLEN(contents))
+		var/mutable_appearance/gun_overlay = mutable_appearance(icon, case_type)
+		for(var/i in 1 to contents.len)
+			gun_overlay.pixel_x = 3 * (i - 1)
+			add_overlay(gun_overlay)
+	if(welded)
+		add_overlay("[icon_state]_cut")
+		layer = OBJ_LAYER
+		return
+	else if(open)
+		add_overlay("[icon_state]_open")
+		layer = OBJ_LAYER
+		return
+	else
+		add_overlay("[icon_state]_door")
+		if(broken)
+			add_overlay("off")
+			add_overlay("sparking")
+		else if(locked)
+			add_overlay("locked")
+		else
+			add_overlay("unlocked")
+
+/obj/structure/gunlocker/rifle
+	name = "rifle locker"
+	desc = "A locker that holds rifles securely."
+	icon_state = "riflecase"
+
+/obj/structure/gunlocker/pistol
+	name = "pistol locker"
+	desc = "A locker that holds handguns securely."
+	icon_state = "pistolcase"
