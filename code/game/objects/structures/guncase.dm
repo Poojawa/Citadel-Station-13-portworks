@@ -127,8 +127,49 @@
 	var/secured = TRUE
 	var/welded = FALSE
 	var/cutting_tool = /obj/item/weldingtool
+	req_access = list(ACCESS_ARMORY)
 
-/obj/structure/guncase/update_icon()
+/obj/structure/gunlocker/Initialize(mapload)
+	. = ..()
+	update_icon()
+	PopulateContents()
+	if(mapload && !opened)		// put any guns into the locker if they fit.
+		take_contents()
+
+//Stealing locker code in more ways than one, yes yes
+/obj/structure/gunlocker/proc/PopulateContents()
+	return
+
+/obj/structure/closet/Destroy()
+	dump_contents(override = FALSE)
+	return ..()
+
+/obj/structure/closet/examine(mob/user)
+	..()
+	if(welded)
+		to_chat(user, "<span class='notice'>It's <b>cut</b> open.</span>")
+
+/obj/structure/closet/proc/can_open(mob/living/user)
+	if(welded || locked)
+		return FALSE
+	return TRUE
+
+obj/structure/closet/proc/can_lock(mob/living/user, var/check_access = TRUE)
+	if(!secure)
+		return FALSE
+	if(welded)
+		to_chat(user, "<span class='notice'>[src] has no locking mechanism!</span>")
+		return FALSE
+	if(!check_access)
+		return TRUE
+	if(allowed(user))
+		return TRUE
+	to_chat(user, "<span class='notice'>Access denied.</span>")
+
+/obj/structure/closet/proc/togglelock(mob/living/user)
+	add_fingerprint(user)
+
+/obj/structure/gunlocker/update_icon()
 	cut_overlays()
 	if(case_type && LAZYLEN(contents))
 		var/mutable_appearance/gun_overlay = mutable_appearance(icon, case_type)
