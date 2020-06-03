@@ -113,15 +113,15 @@
 	gun_category = /obj/item/gun/energy/e_gun
 
 //because I don't really wanna override the usual, I guess. - Pooj
-/obj/structure/gunlocker
+/obj/structure/guncase/gunlocker
 	name = "gun locker"
 	desc = "A locker that holds guns."
 	icon_state = "riflecase"
 	anchored = TRUE
 	density = TRUE
 	opacity = FALSE
-	max_integrity = 400
-	integrity_failure = 10
+	max_integrity = 800
+	integrity_failure = 0.25
 	armor = list("melee" = 70, "bullet" = 70, "laser" = 70, "energy" = 70, "bomb" = 50, "bio" = 0, "rad" = 0, "fire" = 100, "acid" = 100)
 	var/locked = TRUE
 	var/secured = TRUE
@@ -129,33 +129,25 @@
 	var/cutting_tool = /obj/item/weldingtool
 	req_access = list(ACCESS_ARMORY)
 
-/obj/structure/gunlocker/Initialize(mapload)
-	. = ..()
-	update_icon()
-	PopulateContents()
-	if(mapload && !opened)		// put any guns into the locker if they fit.
-		take_contents()
-
-//Stealing locker code in more ways than one, yes yes
-/obj/structure/gunlocker/proc/PopulateContents()
+/obj/structure/guncase/gunlocker/proc/PopulateContents()
 	return
 
-/obj/structure/closet/Destroy()
+/obj/structure/guncase/gunlocker/Destroy()
 	dump_contents(override = FALSE)
 	return ..()
 
-/obj/structure/closet/examine(mob/user)
+/obj/structure/guncase/gunlocker/examine(mob/user)
 	..()
 	if(welded)
 		to_chat(user, "<span class='notice'>It's <b>cut</b> open.</span>")
 
-/obj/structure/closet/proc/can_open(mob/living/user)
+/obj/structure/guncase/gunlocker/proc/can_open(mob/living/user)
 	if(welded || locked)
 		return FALSE
 	return TRUE
 
-obj/structure/closet/proc/can_lock(mob/living/user, var/check_access = TRUE)
-	if(!secure)
+/obj/structure/guncase/gunlocker/proc/can_lock(mob/living/user, var/check_access = TRUE)
+	if(!secured)
 		return FALSE
 	if(welded)
 		to_chat(user, "<span class='notice'>[src] has no locking mechanism!</span>")
@@ -166,10 +158,10 @@ obj/structure/closet/proc/can_lock(mob/living/user, var/check_access = TRUE)
 		return TRUE
 	to_chat(user, "<span class='notice'>Access denied.</span>")
 
-/obj/structure/closet/proc/togglelock(mob/living/user)
+/obj/structure/guncase/gunlocker/proc/togglelock(mob/living/user)
 	add_fingerprint(user)
 
-/obj/structure/gunlocker/update_icon()
+/obj/structure/guncase/gunlocker/update_icon()
 	cut_overlays()
 	if(case_type && LAZYLEN(contents))
 		var/mutable_appearance/gun_overlay = mutable_appearance(icon, case_type)
@@ -194,12 +186,12 @@ obj/structure/closet/proc/can_lock(mob/living/user, var/check_access = TRUE)
 		else
 			add_overlay("unlocked")
 
-/obj/structure/gunlocker/rifle
-	name = "rifle locker"
-	desc = "A locker that holds rifles securely."
+/obj/structure/guncase/gunlocker/longarm
+	name = "Longarm locker"
+	desc = "A locker that holds longarms securely."
 	icon_state = "riflecase"
 
-/obj/structure/gunlocker/pistol
-	name = "pistol locker"
-	desc = "A locker that holds handguns securely."
+/obj/structure/guncase/gunlocker/sidearm
+	name = "Sidearm locker"
+	desc = "A locker that holds sidearms securely."
 	icon_state = "pistolcase"
